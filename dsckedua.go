@@ -1,10 +1,11 @@
 package main
 
-import (
-	"bufio"
-	"fmt"
-	"os"
-)
+import "fmt"
+
+type Printable interface {
+	printPrimary()
+	printSecondary(message string)
+}
 
 type Buku struct {
 	judul    string
@@ -12,17 +13,18 @@ type Buku struct {
 	penerbit string
 }
 
+func (b Buku) printPrimary() {
+	fmt.Println(b.judul)
+}
+
+func (b Buku) printSecondary(message string) {
+	fmt.Println(message)
+	fmt.Println(b.judul)
+}
+
 func main() {
-	var buku Buku
-	var scanner = bufio.NewReader(os.Stdin)
-	fmt.Println("Masukkan judul buku")
-	buku.judul, _ = scanner.ReadString('\n')
-
-	fmt.Println("Masukkan penulis buku")
-	buku.penulis, _ = scanner.ReadString('\n')
-
-	fmt.Println("Masukkan penerbit buku")
-	buku.penerbit, _ = scanner.ReadString('\n')
-
-	fmt.Println("Judul:", buku.judul, "\nPenulis:", buku.penulis, "\nPenerbit:", buku.penerbit)
+	var printable Printable
+	printable = Buku{"Perahu Kertas", "Dewi Lestari", "Bentang"}
+	printable.printPrimary()
+	printable.printSecondary("Ini adalah judul")
 }
